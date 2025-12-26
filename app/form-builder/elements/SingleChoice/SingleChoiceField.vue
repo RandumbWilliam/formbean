@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { GenericObject } from 'vee-validate'
-import type { SingleLineInstance } from '.'
+import type { SingleChoiceInstance } from '.'
 import { Field as VeeField } from 'vee-validate'
 import { evaluateConditions } from '~/form-builder/utils'
-import singleLineElement from '.'
+import singleChoiceElement from '.'
 
 const props = withDefaults(
   defineProps<{
-    elementInstance: SingleLineInstance
+    elementInstance: SingleChoiceInstance
     formValues?: GenericObject | null
     draft?: boolean
   }>(),
@@ -38,10 +38,10 @@ const renderField = computed(() => {
     v-if="renderField"
     v-slot="{ field, errors }"
     :name="props.elementInstance.id"
-    :rules="singleLineElement.generateValidationSchema(props.elementInstance.validations)"
+    :rules="singleChoiceElement.generateValidationSchema(props.elementInstance.validations)"
   >
-    <Field :data-invalid="!!errors.length">
-      <FieldLabel :for="props.elementInstance.id">
+    <FieldSet>
+      <FieldLabel>
         <span>
           <template v-if="props.elementInstance.properties.label">
             {{ props.elementInstance.properties.label }}
@@ -57,13 +57,23 @@ const renderField = computed(() => {
           </span>
         </span>
       </FieldLabel>
-      <Input
-        :id="props.elementInstance.id"
-        v-bind="field"
-        :placeholder="props.elementInstance.properties.placeholder"
-        :aria-invalid="!!errors.length"
-      />
+      <FieldDescription v-if="props.elementInstance.properties.description">
+        {{ props.elementInstance.properties.description }}
+      </FieldDescription>
+      <RadioGroup
+        :model-value="field.value"
+        @update:model-value="field.onChange"
+      >
+        <div
+          v-for="option in props.elementInstance.properties.options"
+          :key="option.id"
+          class="flex items-center space-x-2"
+        >
+          <RadioGroupItem :id="`${option.id}`" :value="option.id" />
+          <Label :for="`${option.id}`">{{ option.label }}</Label>
+        </div>
+      </RadioGroup>
       <FieldError v-if="errors.length" :errors="errors" />
-    </Field>
+    </FieldSet>
   </VeeField>
 </template>

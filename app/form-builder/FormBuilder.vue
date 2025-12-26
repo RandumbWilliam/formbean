@@ -198,10 +198,10 @@ function getConditionFields(pageIndex: number, elementIndex?: number) {
                 >
                   <SheetHeader>
                     <SheetTitle>
-                      Page {{ pageIndex + 1 }} Conditions
+                      Page {{ pageIndex + 1 }} Rules
                     </SheetTitle>
                     <SheetDescription>
-                      Show page if the conditions are met.
+                      Show page if the rules are met.
                     </SheetDescription>
                   </SheetHeader>
 
@@ -286,18 +286,20 @@ function getConditionFields(pageIndex: number, elementIndex?: number) {
                       </SheetDescription>
                     </SheetHeader>
 
-                    <Tabs default-value="properties" class="min-h-0 flex-1 px-4">
-                      <TabsList class="grid w-full grid-cols-2">
-                        <TabsTrigger value="properties">
-                          Properties
-                        </TabsTrigger>
-                        <TabsTrigger value="rules">
-                          Rules
-                        </TabsTrigger>
-                      </TabsList>
+                    <Tabs default-value="properties" class="min-h-0 flex-1">
+                      <div class="px-4">
+                        <TabsList class="grid w-full grid-cols-2">
+                          <TabsTrigger value="properties">
+                            Properties
+                          </TabsTrigger>
+                          <TabsTrigger value="rules">
+                            Rules
+                          </TabsTrigger>
+                        </TabsList>
+                      </div>
 
                       <div class="flex-1 overflow-y-auto">
-                        <TabsContent value="properties">
+                        <TabsContent value="properties" class="px-4">
                           <component
                             :is="elements[element.type].propertiesComponent"
                             :element-instance="element"
@@ -354,15 +356,15 @@ function getConditionFields(pageIndex: number, elementIndex?: number) {
   <Dialog v-model:open="openPageSwapWarning">
     <DialogContent class="sm:max-w-[550px]">
       <DialogHeader>
-        <DialogTitle>Swapping Pages Will Remove Conditions</DialogTitle>
+        <DialogTitle>Swapping Pages Will Remove Rules</DialogTitle>
         <DialogDescription>
-          Swapping the pages will remove existing conditions on both pages.
+          Swapping the pages will remove existing rules on both pages.
         </DialogDescription>
       </DialogHeader>
 
       <div class="space-y-2">
         <p>
-          The pages you are swapping contain conditional logic. Because conditions depend on the order of questions, they cannot be preserved after a swap. All conditions on the affected pages will be removed.
+          The pages you are swapping contain conditional logic. Because rules depend on the order of questions, they cannot be preserved after a swap. All rules on the affected pages will be removed.
         </p>
 
         <div class="flex items-center space-x-2">

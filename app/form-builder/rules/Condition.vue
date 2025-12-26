@@ -2,7 +2,6 @@
 import type { Condition } from '.'
 import type { Form } from '..'
 import type { ElementInstance } from '../elements'
-import { operandValueFields } from '.'
 import { elements } from '../elements'
 
 const props = defineProps<{
@@ -22,7 +21,7 @@ const element = computed(() => {
 
 const operandValueField = computed(() => {
   if (element.value && condition.value.operator) {
-    return operandValueFields[element.value.conditionFns[condition.value.operator].fieldType]
+    return element.value.conditionFns[condition.value.operator].fieldComponent
   }
 
   return null
@@ -71,7 +70,7 @@ function handleElementInstance(el: ElementInstance) {
         <Select
           v-model="condition.operator"
           :disabled="condition.elementInstance === null"
-          @update:model-value="() => (condition.value = null)"
+          @update:model-value="() => (condition.operandValue = null)"
         >
           <SelectTrigger class="w-[180px] border-none shadow-none">
             <SelectValue placeholder="Select an operation" />

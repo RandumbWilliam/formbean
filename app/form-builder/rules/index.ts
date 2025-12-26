@@ -1,11 +1,4 @@
-import type { ElementInstance, Elements } from '../elements'
-import type { OperandValueFieldTypes } from './operandValueFieldTypes'
-import Input from './operand-value-fields/Input.vue'
-import { operandValueFieldTypes } from './operandValueFieldTypes'
-
-export const operandValueFields = {
-  [operandValueFieldTypes.INPUT]: Input,
-}
+import type { ElementInstance } from '../elements'
 
 export function defaultCondition(): Condition {
   return {
@@ -24,15 +17,11 @@ export function defaultConditionGroup(): ConditionGroup {
   }
 }
 
-export interface ConditionFn<TValue, TAnswer> {
-  fieldType: OperandValueFieldTypes
-  fn: (value: TValue, answer: TAnswer) => boolean
-}
-
+// TODO: fix any type
 export interface Condition {
   type: 'condition'
   elementInstance: ElementInstance | null
-  operator: keyof Elements['conditionFns'] | null
+  operator: any
   operandValue: any
 }
 

@@ -1,5 +1,7 @@
 import * as z from 'zod'
 
+// TODO: zod type element instances
+// TODO: zod type rules
 export const createFormSchema = z.object({
   title: z.string(),
   pages: z.array(

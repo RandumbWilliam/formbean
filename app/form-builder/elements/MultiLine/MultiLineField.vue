@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { GenericObject } from 'vee-validate'
-import type { SingleLineInstance } from '.'
+import type { MultiLineInstance } from '.'
 import { Field as VeeField } from 'vee-validate'
 import { evaluateConditions } from '~/form-builder/utils'
-import singleLineElement from '.'
+import multiLineElement from '.'
 
 const props = withDefaults(
   defineProps<{
-    elementInstance: SingleLineInstance
+    elementInstance: MultiLineInstance
     formValues?: GenericObject | null
     draft?: boolean
   }>(),
@@ -38,7 +38,7 @@ const renderField = computed(() => {
     v-if="renderField"
     v-slot="{ field, errors }"
     :name="props.elementInstance.id"
-    :rules="singleLineElement.generateValidationSchema(props.elementInstance.validations)"
+    :rules="multiLineElement.generateValidationSchema(props.elementInstance.validations)"
   >
     <Field :data-invalid="!!errors.length">
       <FieldLabel :for="props.elementInstance.id">
@@ -57,7 +57,7 @@ const renderField = computed(() => {
           </span>
         </span>
       </FieldLabel>
-      <Input
+      <Textarea
         :id="props.elementInstance.id"
         v-bind="field"
         :placeholder="props.elementInstance.properties.placeholder"

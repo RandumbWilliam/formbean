@@ -1,17 +1,17 @@
 import type { ConditionGroup } from '../../rules'
-import { TextCursorInput } from 'lucide-vue-next'
+import { TextAlignStart } from 'lucide-vue-next'
 import * as yup from 'yup'
 import Input from '~/form-builder/rules/operand-value-fields/Input.vue'
 
 import { generateId } from '../../utils'
 import { elementTypes } from '../elementTypes'
-import SingleLineField from './SingleLineField.vue'
-import SingleLineProps from './SingleLineProps.vue'
+import MultiLineField from './MultiLineField.vue'
+import MultiLineProps from './MultiLineProps.vue'
 
-const elementType = elementTypes.SINGLE_LINE
+const elementType = elementTypes.MULTI_LINE
 
-const singleLineElement: SingleLineElement = {
-  construct: (): SingleLineInstance => ({
+const multiLineElement: MultiLineElement = {
+  construct: (): MultiLineInstance => ({
     id: generateId(elementType),
     type: elementType,
     properties: {
@@ -43,27 +43,27 @@ const singleLineElement: SingleLineElement = {
     },
   },
   elementBtnProps: {
-    icon: TextCursorInput,
-    label: 'Single Line',
+    icon: TextAlignStart,
+    label: 'Multi Line',
   },
-  fieldComponent: SingleLineField,
-  propertiesComponent: SingleLineProps,
+  fieldComponent: MultiLineField,
+  propertiesComponent: MultiLineProps,
 }
 
 // TODO: fix conditionFns any
-export interface SingleLineElement {
-  construct: () => SingleLineInstance
-  generateValidationSchema: (validations: SingleLineInstance['validations']) => yup.AnySchema
+export interface MultiLineElement {
+  construct: () => MultiLineInstance
+  generateValidationSchema: (validations: MultiLineInstance['validations']) => yup.AnySchema
   conditionFns: any
   elementBtnProps: {
     icon: Component
     label: string
   }
-  fieldComponent: Component<{ elementInstance: SingleLineInstance }>
-  propertiesComponent: Component<{ elementInstance: SingleLineInstance }>
+  fieldComponent: Component<{ elementInstance: MultiLineInstance }>
+  propertiesComponent: Component<{ elementInstance: MultiLineInstance }>
 }
 
-export interface SingleLineInstance {
+export interface MultiLineInstance {
   id: string
   type: typeof elementType
   properties: {
@@ -76,4 +76,4 @@ export interface SingleLineInstance {
   rules: ConditionGroup | null
 }
 
-export default singleLineElement
+export default multiLineElement
