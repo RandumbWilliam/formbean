@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { GenericObject } from 'vee-validate'
-import type { SingleChoiceInstance } from '.'
+import type { MultiChoiceInstance } from '.'
 import { Field as VeeField } from 'vee-validate'
 import { evaluateConditions } from '~/form-builder/utils'
-import singleChoiceElement from '.'
+import multiChoiceElement from '.'
 
 const props = withDefaults(
   defineProps<{
-    elementInstance: SingleChoiceInstance
+    elementInstance: MultiChoiceInstance
     formValues?: GenericObject | null
     draft?: boolean
   }>(),
@@ -38,9 +38,9 @@ const renderField = computed(() => {
     v-if="renderField"
     v-slot="{ field, errors }"
     :name="props.elementInstance.id"
-    :rules="singleChoiceElement.generateValidationSchema(props.elementInstance.validations)"
+    :rules="multiChoiceElement.generateValidationSchema(props.elementInstance.validations)"
   >
-    <FieldSet>
+    <FieldSet :data-invalid="!!errors.length">
       <FieldLabel>
         <span>
           <template v-if="props.elementInstance.properties.label">
@@ -60,19 +60,37 @@ const renderField = computed(() => {
       <FieldDescription v-if="props.elementInstance.properties.description">
         {{ props.elementInstance.properties.description }}
       </FieldDescription>
-      <RadioGroup
-        :model-value="field.value"
-        @update:model-value="field.onChange"
-      >
-        <div
+      <FieldGroup data-slot="checkbox-group">
+        <Field
           v-for="option in props.elementInstance.properties.options"
           :key="option.id"
-          class="flex items-center space-x-2"
+          orientation="horizontal"
+          :data-invalid="!!errors.length"
         >
-          <RadioGroupItem :id="`${option.id}`" :value="option.id" />
-          <Label :for="`${option.id}`" class="font-normal">{{ option.label }}</Label>
-        </div>
-      </RadioGroup>
+          <Checkbox
+            :id="`${option.id}`"
+            :name="field.name"
+            :aria-invalid="!!errors.length"
+            :model-value="field.value?.includes(option.id)"
+            @update:model-value="
+              (checked: boolean | 'indeterminate') => {
+                const newValue = checked
+                  ? [...(field.value || []), option.id]
+                  : (field.value || []).filter(
+                    (value: string) => value !== option.id,
+                  );
+                field.onChange(newValue);
+              }
+            "
+          />
+          <FieldLabel
+            :for="`${option.id}`"
+            class="font-normal"
+          >
+            {{ option.label }}
+          </FieldLabel>
+        </Field>
+      </FieldGroup>
       <FieldError v-if="errors.length" :errors="errors" />
     </FieldSet>
   </VeeField>
