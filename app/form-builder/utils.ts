@@ -25,6 +25,11 @@ export function evaluateConditions(
     }
 
     const fieldValue = formValues[elementInstance.id]
+
+    if (!fieldValue) {
+      return false
+    }
+
     return conditionFn.fn(operandValue, fieldValue)
   }
 
