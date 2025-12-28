@@ -1,8 +1,8 @@
-import type { ConditionGroup } from '../../rules'
+import type { ConditionFns, ConditionGroup } from '../../rules'
 import { CircleCheck } from 'lucide-vue-next'
 import * as yup from 'yup'
-import SingleSelect from '~/form-builder/rules/operand-value-fields/SingleSelect.vue'
 
+import SingleSelect from '~/form-builder/rules/operand-value-fields/SingleSelect.vue'
 import { generateId } from '../../utils'
 import { elementTypes } from '../elementTypes'
 import SingleChoiceField from './SingleChoiceField.vue'
@@ -40,8 +40,8 @@ const singleChoiceElement: SingleChoiceElement = {
   },
   conditionFns: {
     'exactly equals': {
-      fieldComponent: SingleSelect,
-      fn: (value: string, answer: string) => value === answer,
+      fn: (operandValue: string, fieldValue) => operandValue === fieldValue,
+      operandValueComponent: SingleSelect,
     },
   },
   elementBtnProps: {
@@ -52,11 +52,10 @@ const singleChoiceElement: SingleChoiceElement = {
   propertiesComponent: SingleChoiceProps,
 }
 
-// TODO: fix conditionFns any
 export interface SingleChoiceElement {
   construct: () => SingleChoiceInstance
-  generateValidationSchema: (validations: SingleChoiceInstance['validations']) => yup.AnySchema
-  conditionFns: any
+  generateValidationSchema: (validations: SingleChoiceInstance['validations']) => yup.StringSchema
+  conditionFns: ConditionFns<string>
   elementBtnProps: {
     icon: Component
     label: string

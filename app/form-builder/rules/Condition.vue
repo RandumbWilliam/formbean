@@ -20,11 +20,14 @@ const element = computed(() => {
 })
 
 const operandValueField = computed(() => {
-  if (element.value && condition.value.operator) {
-    return element.value.conditionFns[condition.value.operator].fieldComponent
+  if (!element.value || !condition.value.operator) {
+    return null
   }
 
-  return null
+  const { conditionFns } = element.value
+  const operator = condition.value.operator
+
+  return conditionFns[operator]?.operandValueComponent ?? null
 })
 
 function handleElementInstance(el: ElementInstance) {
@@ -89,11 +92,11 @@ function handleElementInstance(el: ElementInstance) {
         </Select>
       </div>
 
-      <template v-if="operandValueField">
+      <template v-if="operandValueField && condition.elementInstance">
         <component
           :is="operandValueField"
           v-model="condition.operandValue"
-          :element-instance="condition.elementInstance"
+          :element-instance="condition.elementInstance as any"
         />
       </template>
       <Input

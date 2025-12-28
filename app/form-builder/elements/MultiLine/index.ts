@@ -1,8 +1,8 @@
-import type { ConditionGroup } from '../../rules'
+import type { ConditionFns, ConditionGroup } from '../../rules'
 import { TextAlignStart } from 'lucide-vue-next'
 import * as yup from 'yup'
-import Input from '~/form-builder/rules/operand-value-fields/Input.vue'
 
+import Input from '~/form-builder/rules/operand-value-fields/Input.vue'
 import { generateId } from '../../utils'
 import { elementTypes } from '../elementTypes'
 import MultiLineField from './MultiLineField.vue'
@@ -33,13 +33,9 @@ const multiLineElement: MultiLineElement = {
     return schema
   },
   conditionFns: {
-    equals: {
-      fieldComponent: Input,
-      fn: (value: string, answer: string) => value === answer,
-    },
     includes: {
-      fieldComponent: Input,
-      fn: (value: string, answer: string) => value.includes(answer),
+      fn: (operandValue: string, fieldValue) => fieldValue.includes(operandValue),
+      operandValueComponent: Input,
     },
   },
   elementBtnProps: {
@@ -50,11 +46,10 @@ const multiLineElement: MultiLineElement = {
   propertiesComponent: MultiLineProps,
 }
 
-// TODO: fix conditionFns any
 export interface MultiLineElement {
   construct: () => MultiLineInstance
-  generateValidationSchema: (validations: MultiLineInstance['validations']) => yup.AnySchema
-  conditionFns: any
+  generateValidationSchema: (validations: MultiLineInstance['validations']) => yup.StringSchema
+  conditionFns: ConditionFns<string>
   elementBtnProps: {
     icon: Component
     label: string

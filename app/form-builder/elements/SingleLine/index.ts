@@ -1,8 +1,8 @@
-import type { ConditionGroup } from '../../rules'
+import type { ConditionFns, ConditionGroup } from '../../rules'
 import { TextCursorInput } from 'lucide-vue-next'
 import * as yup from 'yup'
-import Input from '~/form-builder/rules/operand-value-fields/Input.vue'
 
+import Input from '~/form-builder/rules/operand-value-fields/Input.vue'
 import { generateId } from '../../utils'
 import { elementTypes } from '../elementTypes'
 import SingleLineField from './SingleLineField.vue'
@@ -34,12 +34,12 @@ const singleLineElement: SingleLineElement = {
   },
   conditionFns: {
     equals: {
-      fieldComponent: Input,
-      fn: (value: string, answer: string) => value === answer,
+      fn: (operandValue: string, fieldValue) => operandValue === fieldValue,
+      operandValueComponent: Input,
     },
     includes: {
-      fieldComponent: Input,
-      fn: (value: string, answer: string) => value.includes(answer),
+      fn: (operandValue: string, fieldValue) => fieldValue.includes(operandValue),
+      operandValueComponent: Input,
     },
   },
   elementBtnProps: {
@@ -50,11 +50,10 @@ const singleLineElement: SingleLineElement = {
   propertiesComponent: SingleLineProps,
 }
 
-// TODO: fix conditionFns any
 export interface SingleLineElement {
   construct: () => SingleLineInstance
-  generateValidationSchema: (validations: SingleLineInstance['validations']) => yup.AnySchema
-  conditionFns: any
+  generateValidationSchema: (validations: SingleLineInstance['validations']) => yup.StringSchema
+  conditionFns: ConditionFns<string>
   elementBtnProps: {
     icon: Component
     label: string

@@ -24,8 +24,8 @@ export function evaluateConditions(
       return false
     }
 
-    const value = formValues[elementInstance.id]
-    return conditionFn.fn(value, operandValue)
+    const fieldValue = formValues[elementInstance.id]
+    return conditionFn.fn(operandValue, fieldValue)
   }
 
   const { operator, children } = conditionNode

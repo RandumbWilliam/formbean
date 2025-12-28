@@ -17,11 +17,18 @@ export function defaultConditionGroup(): ConditionGroup {
   }
 }
 
-// TODO: fix any type
+// TODO: fix operandValue any type
+export interface ConditionFns<TFieldValue> {
+  [key: string]: {
+    fn: (operandValue: any, fieldValue: TFieldValue) => boolean
+    operandValueComponent: Component
+  }
+}
+
 export interface Condition {
   type: 'condition'
   elementInstance: ElementInstance | null
-  operator: any
+  operator: string | null
   operandValue: any
 }
 
