@@ -6,6 +6,10 @@ import { evaluateConditions } from './utils'
 
 const props = defineProps<{
   form: Form
+  submitted: boolean
+}>()
+const emit = defineEmits<{
+  (e: 'submit', values: any): void
 }>()
 
 const pageIdx = ref(0)
@@ -43,7 +47,7 @@ const onSubmit = handleSubmit((values) => {
   }
 
   // Let the parent know the form was filled across all steps
-  console.log(values)
+  emit('submit', values)
 })
 
 function goToPrev() {
@@ -68,39 +72,46 @@ watch(visiblePages, (vp) => {
 <template>
   <div class="min-h-screen bg-muted pt-16">
     <div class="flex w-full justify-center p-6">
-      <form
+      <div
         class="
           flex min-h-80 w-full max-w-3xl flex-col justify-between bg-background
           p-1.5
         "
-        @submit="onSubmit"
       >
-        <template v-for="(page, index) in visiblePages" :key="page.id">
-          <FieldGroup v-if="pageIdx === index">
-            <component
-              :is="elements[elementInstance.type].fieldComponent"
-              v-for="elementInstance in page.elementInstances"
-              :key="elementInstance.id"
-              :element-instance="elementInstance"
-              :form-values="values"
-            />
-          </FieldGroup>
-        </template>
-
-        <div class="flex justify-center">
-          <Button
-            v-if="hasPrevious"
-            type="button"
-            variant="outline"
-            @click="goToPrev"
-          >
-            Previous
-          </Button>
-          <Button type="submit">
-            {{ isLastStep ? 'Submit' : 'Next' }}
-          </Button>
+        <div v-if="props.submitted" class="flex items-center justify-center">
+          Thank You
         </div>
-      </form>
+        <form
+          v-else
+          @submit="onSubmit"
+        >
+          <template v-for="(page, index) in visiblePages" :key="page.id">
+            <FieldGroup v-if="pageIdx === index">
+              <component
+                :is="elements[elementInstance.type].fieldComponent"
+                v-for="elementInstance in page.elementInstances"
+                :key="elementInstance.id"
+                :element-instance="elementInstance"
+                :form-values="values"
+              />
+            </FieldGroup>
+          </template>
+
+          <div class="flex justify-center">
+            <Button
+              v-if="hasPrevious"
+              type="button"
+              variant="outline"
+              @click="goToPrev"
+            >
+              Previous
+            </Button>
+            <Button type="submit">
+              {{ isLastStep ? 'Submit' : 'Next' }}
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>

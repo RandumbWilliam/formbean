@@ -7,6 +7,7 @@ export default defineEventHandler(async (event) => {
 
   const [form] = await db.insert(formsTable).values({
     draftForm: body,
+    publishedForm: body,
   }).returning()
 
   return form.id

@@ -12,3 +12,8 @@ export const createFormSchema = z.object({
     }),
   ).min(1),
 })
+
+export const updateFormSchema = z.object({
+  published: z.boolean(),
+  form: createFormSchema,
+}).partial()

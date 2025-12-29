@@ -27,7 +27,7 @@ const onSubmit = handleSubmit(async (values) => {
       body: values,
     })
 
-    return navigateTo(`/${formId}`)
+    return navigateTo(`/forms/${formId}`)
   }
   catch (error) {
     console.error(error)
