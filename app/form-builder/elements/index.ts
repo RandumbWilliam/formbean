@@ -1,8 +1,10 @@
+import type { FileUploadInstance } from './FileUpload'
 import type { MultiChoiceInstance } from './MultiChoice'
 import type { MultiLineInstance } from './MultiLine'
 import type { SingleChoiceInstance } from './SingleChoice'
 import type { SingleLineInstance } from './SingleLine'
 import { elementTypes } from './elementTypes'
+import fileUploadElement from './FileUpload'
 import multiChoiceElement from './MultiChoice'
 import multiLineElement from './MultiLine'
 import singleChoiceElement from './SingleChoice'
@@ -13,6 +15,7 @@ export const elements = {
   [elementTypes.MULTI_LINE]: multiLineElement,
   [elementTypes.SINGLE_CHOICE]: singleChoiceElement,
   [elementTypes.MULTI_CHOICE]: multiChoiceElement,
+  [elementTypes.FILE_UPLOAD]: fileUploadElement,
 }
 
 export const groupElements = [
@@ -24,6 +27,10 @@ export const groupElements = [
     group: 'Select Fields',
     elements: [singleChoiceElement, multiChoiceElement],
   },
+  {
+    group: 'Other',
+    elements: [fileUploadElement],
+  },
 ]
 
 export type Elements = (typeof elements)[keyof typeof elements]
@@ -32,3 +39,4 @@ export type ElementInstance = SingleLineInstance
   | MultiLineInstance
   | SingleChoiceInstance
   | MultiChoiceInstance
+  | FileUploadInstance

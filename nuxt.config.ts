@@ -31,4 +31,18 @@ export default defineNuxtConfig({
       standalone: false,
     },
   },
+  nitro: {
+    storage: {
+      // TODO: s3 variables
+      s3: {
+        driver: 's3',
+        bucket: 'formbean',
+        region: 'us-east-2',
+        accessKeyId: 'mock_access_key',
+        secretAccessKey: 'mock_secret_key',
+        endpoint: 'http://localhost:4566',
+        forcePathStyle: true,
+      },
+    },
+  },
 })
