@@ -31,6 +31,15 @@ export default defineNuxtConfig({
       standalone: false,
     },
   },
+  fonts: {
+    families: [
+      {
+        name: 'Poppins',
+        provider: 'google',
+        weights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+      },
+    ],
+  },
   nitro: {
     storage: {
       // TODO: s3 variables
